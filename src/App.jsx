@@ -1,12 +1,15 @@
 import React from 'react'
+import Hero from './components/Hero'
+import Generator from './components/Generator'
+import Workout from './components/Workout'
 
 const App = () => {
   return (
-    <div>
-      <div class="font-sans text-lg">
-        This text uses the DM Sans font.
-      </div>
-    </div>
+    <>
+      <Hero/>
+      <Generator/>
+      <Workout/>
+    </>
   )
 }
 
