@@ -1,3 +1,47 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* styles.css */
+.h1 {
+    @apply text-5xl md:text-8xl 2xl:text-9xl; 
+}
+
+.h2 {
+    @apply text-4xl md:text-7xl 2xl:text-8xl;
+}
+
+.h3 {
+    @apply text-3xl md:text-6xl 2xl:text-7xl;
+}
+
+.h4 {
+    @apply text-2xl md:text-5xl 2xl:text-6xl;
+}
+
+.h5 {
+    @apply text-xl md:text-4xl 2xl:text-5xl;
+}
+
+.h6 {
+    @apply text-2xl md:text-3xl 2xl:text-4xl;
+}
+
+.h7 {
+    @apply text-lg md:text-2xl 2xl:text-3xl;
+}
+
+.p {
+    @apply text-base md:text-lg 2xl:text-xl;
+}
+
+.responsivePad {
+    @apply 2xl:px-[300px] xl:px-[200px] lg:px-[120px] md:px-[64px] sm:px-[16px];
+}
+
+
+
+  
+  
+
+  
