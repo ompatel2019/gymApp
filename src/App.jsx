@@ -14,8 +14,6 @@ const App = () => {
         <Generator setGenerateWorkoutParams={setGenerateWorkoutParams}/>
         <Workout generateWorkoutParams={generateWorkoutParams} /> 
         <Footer/>
-        {/* 
-        */}
     </main>
   )
 }

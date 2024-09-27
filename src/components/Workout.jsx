@@ -47,7 +47,7 @@ const Workout = ({ generateWorkoutParams }) => {
       <div className='flex flex-col space-y-8'>
         {workout.map((workoutItem, index) => (
           <div key={index} className='bg-slate-950 rounded-lg p-4 space-y-4'>
-            <div className='flex justify-between items-center '>
+            <div className='flex justify-between items-center max-sm:flex-col'>
               <p className='h5 font-bold text-[#91a2b7]'>{`0${index + 1}`}</p>
               <p className='h7 font-semibold capitalize'>{formatName(workoutItem.name)}</p>
               <p className='text-gray-400 capitalize'>{workoutItem.type}</p>
