@@ -13,8 +13,8 @@ const App = () => {
         <GenerateHeading/>
         <Generator setGenerateWorkoutParams={setGenerateWorkoutParams}/>
         <Workout generateWorkoutParams={generateWorkoutParams} /> 
-        {/* 
         <Footer/>
+        {/* 
         */}
     </main>
   )
