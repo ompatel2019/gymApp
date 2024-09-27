@@ -63,6 +63,19 @@ const Workout = ({ generateWorkoutParams }) => {
     return name.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
   };
 
+  const increment = (index) => {
+    setCounters(prevCounters => prevCounters.map((count, idx) => {
+      if (idx === index) {
+        const newCount = count + 1;
+        if (newCount > 3) { // Resets after 3
+          return 0; // Reset counter after it reaches 3
+        }
+        return newCount;
+      }
+      return count;
+    }));
+  };
+
   return (
     <div id='workout' className='responsivePad py-8 flex flex-col space-y-4'>
       <div className='space-y-4 p'>
@@ -99,12 +112,8 @@ const Workout = ({ generateWorkoutParams }) => {
                 </p>
               </div>
   
-              <div className='border-2 border-blue-500 p-2 w-full rounded-md cursor-pointer' onClick={() => {
-                if (!completeSets[index] && counters[index] < 3) {
-                  increment(index);
-                }
-              }}>
-                <p className='font-light text-[#91a2b7]'>{!completeSets[index] ? 'Click To Complete Set' : 'All Sets Completed! 😀'}</p>
+              <div className='border-2 border-blue-500 p-2 w-full rounded-md cursor-pointer' onClick={() => increment(index)}>
+                <p className='font-light text-[#91a2b7]'>{counters[index] > 2 ? 'Set Completed!' : 'Set Counter'}</p>
                 <p className='font-bold'>{`${counters[index]} / 3`}</p>
               </div>
             </div>
