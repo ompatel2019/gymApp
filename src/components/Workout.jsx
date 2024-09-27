@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import {generateWorkout} from '../utils/functions';
-import { SCHEMES, WORKOUTS, TEMPOS } from '../utils/workouts';
+import { generateWorkout } from '../utils/functions';
 
 const Workout = ({ generateWorkoutParams }) => {
   const [workout, setWorkout] = useState([]);
   const [counters, setCounters] = useState([]);
   const [completeSets, setCompleteSets] = useState([]);
   const [showDescs, setShowDescs] = useState([]);
+  const [timers, setTimers] = useState([]);
+  const [originalTimers, setOriginalTimers] = useState([]);
+  const [activeTimers, setActiveTimers] = useState([]);
 
   useEffect(() => {
     if (generateWorkoutParams && generateWorkoutParams.poison && generateWorkoutParams.goal && generateWorkoutParams.muscles.length > 0) {
@@ -20,16 +22,41 @@ const Workout = ({ generateWorkoutParams }) => {
       setCounters(new Array(newWorkout.length).fill(0));
       setCompleteSets(new Array(newWorkout.length).fill(false));
       setShowDescs(new Array(newWorkout.length).fill(false));
+      const restTimes = newWorkout.map(item => item.rest);
+      setTimers(restTimes);
+      setOriginalTimers(restTimes);
+      setActiveTimers(new Array(newWorkout.length).fill(false));
     }
   }, [generateWorkoutParams]);
 
-  const increment = (index) => {
-    setCounters(counters.map((count, idx) => idx === index ? (count === 2 ? 0 : count + 1) : count));
-    setCompleteSets(completeSets.map((set, idx) => idx === index ? (counters[index] === 2) : set));
-  };
+  useEffect(() => {
+    const intervalIds = timers.map((_, index) =>
+      setInterval(() => {
+        if (activeTimers[index]) {
+          setTimers((prevTimers) => {
+            const newTimers = [...prevTimers];
+            if (newTimers[index] > 0) {
+              newTimers[index]--;
+            } else {
+              newTimers[index] = originalTimers[index]; // Reset to original time when it reaches zero
+              setActiveTimers(active => active.map((act, idx) => idx === index ? false : act));
+              clearInterval(intervalIds[index]);
+            }
+            return newTimers;
+          });
+        }
+      }, 1000)
+    );
 
-  const toggleDescription = (index) => {
-    setShowDescs(showDescs.map((show, idx) => idx === index ? !show : show));
+    return () => intervalIds.forEach(clearInterval);
+  }, [activeTimers, originalTimers]);
+
+  const startTimer = (index) => {
+    setActiveTimers((prev) => {
+      const newActive = [...prev];
+      newActive[index] = true;
+      return newActive;
+    });
   };
 
   const formatName = (name) => {
@@ -53,54 +80,42 @@ const Workout = ({ generateWorkoutParams }) => {
               <p className='text-gray-400 capitalize'>{workoutItem.type}</p>
             </div>
   
-            <div className=''>
-              <p className='font-light text-[#91a2b7]'>Muscle groups</p>
-              <p className='font-bold capitalize'>{workoutItem.muscles.join(', ')}</p>
-            </div>
-  
             <div className='grid grid-cols-4 max-md:grid-cols-2 gap-2'>
+
               <div className='border-2 border-gray-500 p-2 w-full rounded-md'>
                 <p className='font-light text-[#91a2b7]'>Reps</p>
                 <p className='font-bold'>{workoutItem.reps}</p>
-              </div>
-              
-              <div className='border-2 border-gray-500 p-2 w-full rounded-md'>
-                <p className='font-light text-[#91a2b7]'>Rest (Click to start)</p>
-                <p className='font-bold'>{workoutItem.rest}</p>
               </div>
   
               <div className='border-2 border-gray-500 p-2 w-full rounded-md'>
                 <p className='font-light text-[#91a2b7]'>Tempo</p>
                 <p className='font-bold'>{workoutItem.tempo}</p>
               </div>
+
+              <div onClick={() => startTimer(index)} className='border-2 border-blue-500 p-2 w-full rounded-md cursor-pointer'>
+                <p className='font-light text-[#91a2b7]'>Rest</p>
+                <p className={`font-bold ${timers[index] < 10 && timers[index] > 0 ? 'text-red-500' : ''} ${timers[index] === 0 ? 'text-green-500' : ''}`}>
+                  {timers[index]} sec
+                </p>
+              </div>
   
-              <div className='border-2 p-2 w-full rounded-md border-blue-500 hover:border-white transition-all ease-in-out'>
-                {!completeSets[index] && 
-                <p className='font-light text-[#91a2b7] cursor-pointer'>Sets Completed</p>
+              <div className='border-2 border-blue-500 p-2 w-full rounded-md cursor-pointer' onClick={() => {
+                if (!completeSets[index] && counters[index] < 3) {
+                  increment(index);
                 }
-  
-                {completeSets[index] &&
-                <div className='flex space-x-2 items-center'>
-                  <p className='font-bold cursor-pointer'>Set Completed!</p>
-                  <i className="fa-regular fa-face-smile"></i>
-                </div>
-                }
-                <p onClick={() => increment(index)} className='font-bold'>{`${counters[index]} / 3`}</p>
+              }}>
+                <p className='font-light text-[#91a2b7]'>{!completeSets[index] ? 'Click to complete set' : 'All sets completed'}</p>
+                <p className='font-bold'>{`${counters[index]} / 3`}</p>
               </div>
             </div>
   
             <div className='p-4 bg-slate-800 rounded-md flex flex-col'>
               <div className='flex justify-between items-center'>
                 <p className='font-bold p'>Description</p>
-                {!showDescs[index] &&
-                <i onClick={() => toggleDescription(index)} className="fa-solid fa-plus cursor-pointer"></i>
-                }
-                {showDescs[index] && 
-                <i onClick={() => toggleDescription(index)} className="fa-solid fa-minus cursor-pointer"></i>
-                }
+                <i onClick={() => setShowDescs(showDescs.map((show, idx) => idx === index ? !show : show))} className={`fa-solid ${showDescs[index] ? 'fa-minus' : 'fa-plus'} cursor-pointer`}></i>
               </div>
               {showDescs[index] &&
-              <p>
+              <p className='text-sm'>
                 {workoutItem.description}
               </p>
               }
@@ -109,7 +124,7 @@ const Workout = ({ generateWorkoutParams }) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default Workout;
