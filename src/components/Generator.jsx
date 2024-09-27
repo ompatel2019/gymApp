@@ -64,7 +64,7 @@ const Generator = ({setGenerateWorkoutParams}) => {
   // Updates selector text based on the selected challenge
   useEffect(() => {
     if (challenge === 'individual') {
-      setSelectorText('Which body parts do you want to target? (up to 3)');
+      setSelectorText('Which body parts do you want to target? (upto 3)');
     } else if (challenge === 'bro_split') {
       setSelectorText('Which split would you like to do?');
     } else if (challenge === 'bodybuilder_split') {

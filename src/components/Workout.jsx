@@ -93,7 +93,7 @@ const Workout = ({ generateWorkoutParams }) => {
               </div>
 
               <div onClick={() => startTimer(index)} className='border-2 border-blue-500 p-2 w-full rounded-md cursor-pointer'>
-                <p className='font-light text-[#91a2b7]'>Rest</p>
+                <p className='font-light text-[#91a2b7]'>Rest (Click to start)</p>
                 <p className={`font-bold ${timers[index] < 10 && timers[index] > 0 ? 'text-red-500' : ''} ${timers[index] === 0 ? 'text-green-500' : ''}`}>
                   {timers[index]} sec
                 </p>
@@ -104,7 +104,7 @@ const Workout = ({ generateWorkoutParams }) => {
                   increment(index);
                 }
               }}>
-                <p className='font-light text-[#91a2b7]'>{!completeSets[index] ? 'Click to complete set' : 'All sets completed'}</p>
+                <p className='font-light text-[#91a2b7]'>{!completeSets[index] ? 'Click To Complete Set' : 'All Sets Completed! 😀'}</p>
                 <p className='font-bold'>{`${counters[index]} / 3`}</p>
               </div>
             </div>
