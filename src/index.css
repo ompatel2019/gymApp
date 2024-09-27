@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+    scroll-behavior: smooth;
+}
+
 /* styles.css */
 .h1 {
     @apply text-5xl md:text-8xl 2xl:text-9xl; 
@@ -36,7 +40,7 @@
 }
 
 .responsivePad {
-    @apply 2xl:px-[300px] xl:px-[200px] lg:px-[120px] md:px-[64px] sm:px-[16px];
+    @apply 2xl:px-[300px] xl:px-[200px] lg:px-[120px] md:px-[64px] max-sm:px-[16px];
 }
 
 

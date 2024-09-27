@@ -16,9 +16,11 @@ const Hero = () => {
           I acknowledge the potential risks associated with significant muscle growth, including body dysmorphia and challenges with everyday mobility.
         </p>
         
-        <button className="button">
-          Start the journey
-        </button>
+        <a href="#generator">
+          <button className="button">
+            Start the journey
+          </button>
+        </a>
       </div>
     </div>
   );
