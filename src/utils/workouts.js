@@ -18,6 +18,13 @@ export const SCHEMES = {
     }
 }
 
+export const SELECTIONS = {
+    individual: ['biceps', 'triceps', 'chest', 'back', 'shoulders', 'quads', 'hamstrings', 'glutes', 'calves', 'abs'],
+    bro_split: ['push', 'pull', 'legs'],
+    bodybuilder_split: ['chest', 'back', 'shoulders', 'legs', 'arms', 'abs'],
+    upper_lower: ['upper', 'lower']
+}
+
 export const WORKOUTS = {
     individual: ['biceps', 'triceps', 'chest', 'back', 'shoulders', 'quads', 'hamstrings', 'glutes', 'calves', 'abs'],
     bro_split: {
