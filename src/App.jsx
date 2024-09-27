@@ -11,9 +11,9 @@ const App = () => {
         <Hero/>
         <GenerateHeading/>
         <Generator/>
+        <Workout/> 
 
         {/* 
-        <Workout/> 
         <Footer/>
         */}
     </main>
