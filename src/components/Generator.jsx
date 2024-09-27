@@ -9,24 +9,55 @@ const Generator = () => {
   const [challenge, setChallenge] = useState('');
   const [muscles, setMuscles] = useState([]);
   const [goals, setGoals] = useState('');
+  const [selectorText, setSelectorText] = useState('Select muscle groups');
 
   useEffect(() => {
     if (challenge) {
-      console.log(challenge);
+      console.log('Selected Challenge:', challenge);
     }
 
-    if (muscles) {
-      console.log(muscles);
+    if (muscles.length > 0) {
+      console.log('Selected Muscles:', muscles);
     }
 
     if (goals) {
-      console.log(goals);
+      console.log('Selected Goal:', goals);
     }
+
+    if (challenge === 'individual') {
+      setSelectorText('Select muscle groups (up to 3)');
+    } else {
+      setSelectorText('Select muscle groups');
+    }
+
   }, [challenge, goals, muscles]);
 
   const modalShow = () => {
     setShowModal(prev => !prev);
-  }
+  };
+  // Function to handle challenge selection and update muscles accordingly
+  const handleChallengeClick = (type) => {
+    setChallenge(type);
+
+    // Set muscles based on the selected challenge
+    switch (type) {
+      case 'individual':
+        setMuscles(WORKOUTS.individual);
+        break;
+      case 'bro_split':
+        setMuscles(WORKOUTS.bro_split);
+        break;
+      case 'bodybuilder_split':
+        setMuscles(WORKOUTS.bodybuilder_split);
+        break;
+      case 'upper_lower':
+        setMuscles(WORKOUTS.upper_lower);
+        break;
+      default:
+        setMuscles([]); 
+    }
+  };
+
 
   return (
     <div id='generator' className='responsivePad flex flex-col items-center py-24 justify-center space-y-12'>
@@ -40,8 +71,8 @@ const Generator = () => {
         <div className='grid grid-cols-2 lg:grid-cols-4 gap-8 max-sm:gap-2'>
           {Object.keys(WORKOUTS).map((type, typeIndex) => (
             <button
-              onClick={() => setChallenge(type)}
-              className={`${regularClass} hover:bg-white hover:border-black hover:text-black transition-all ease-in-out duration-500 rounded-lg ${
+              onClick={() => handleChallengeClick(type)}
+              className={`${regularClass} hover:bg-white hover:border-blue-600 hover:text-black transition-all ease-in-out duration-500 rounded-lg ${
                 challenge === type ? 'border-blue-400' : 'border-white'
               }`}
               key={typeIndex}
@@ -64,7 +95,7 @@ const Generator = () => {
               showModal ? showModalClass : 'rounded-lg'
             }`}
           >
-            <p>Select muscle groups</p>
+            <p>{selectorText}</p>
             {!showModal && (
               <button onClick={modalShow}>
                 <i className='fa-solid fa-circle-arrow-down'></i>
@@ -77,9 +108,11 @@ const Generator = () => {
             )}
           </div>
 
-          {showModal && (
+          {showModal && muscles.length > 0 && (
             <div className='bg-slate-950 flex flex-col gap-4 w-full text-center justify-center items-center rounded-b-lg border-b-2 border-x-2'>
-              {challenge == 'individual' ? setMuscles(WORKOUTS.individual) : challenge == 'bro_split' ? setMuscles(WORKOUTS.bro_split) :  challenge === 'bodybuilder_split' ? setMuscles(WORKOUTS.bodybuilder_split) : setMuscles(WORKOUTS.upper_lower)}
+              {muscles.map((muscle, index) => (
+                <p key={index}>{muscle}</p> 
+              ))}
             </div>
           )}
         </div>
@@ -96,7 +129,9 @@ const Generator = () => {
           {Object.keys(SCHEMES).map((scheme, schemeIndex) => (
             <button
               onClick={() => setGoals(scheme)}
-              className={`${regularClass} hover:bg-white hover:border-black hover:text-black transition-all ease-in-out duration-500 rounded-lg ${goals === scheme ? 'border-blue-400' : 'border-white'}`}
+              className={`${regularClass} hover:bg-white hover:border-blue-600 hover:text-black transition-all ease-in-out duration-500 rounded-lg ${
+                goals === scheme ? 'border-blue-400' : 'border-white'
+              }`}
               key={schemeIndex}
             >
               <p className='capitalize'>{scheme.replaceAll('_', ' ')}</p>
