@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import GeneratorSubheadings from './GeneratorSubheadings';
 import { SCHEMES, WORKOUTS, SELECTIONS } from '../utils/workouts';
 
-const Generator = () => {
+const Generator = ({setGenerateWorkoutParams}) => {
   const regularClass = 'bg-slate-950 p-5 border-2 2xl:text-xl';
   const showModalClass = 'rounded-t-lg border-b-0';
 
@@ -13,6 +13,7 @@ const Generator = () => {
   const [selectorText, setSelectorText] = useState('Select muscle groups');
   const [muscleGroup, setMuscleGroup] = useState([]);
   const [showMsg, setErrorMsg] = useState(false);
+  const [showErr, setShowErr] = useState(false);
 
   // Handles the display of the modal
   const modalShow = () => {
@@ -73,16 +74,19 @@ const Generator = () => {
     }
   }, [challenge]);
 
-  useEffect(() => {
-    if (challenge && muscleGroup && goals) { 
-      const generateWorkoutParams = {
-        muscles: muscleGroup,
-        poison: challenge,
-        goal: goals
-      }
-      console.log(generateWorkoutParams);
-    }
-  }, [challenge, goals, muscles, muscleGroup]);
+  // useEffect(() => {
+  //   if (challenge && muscleGroup && goals) { 
+  //     const generateWorkoutParams = {
+  //       muscles: muscleGroup,
+  //       poison: challenge,
+  //       goal: goals
+  //     }
+  //     setErrorMsg(false);
+  //     setGenerateWorkoutParams(generateWorkoutParams);
+  //   } else {
+  //     setShowErr(true);
+  //   }
+  // }, [challenge, goals, muscles, muscleGroup]);
 
   return (
     <div id='generator' className='responsivePad flex flex-col items-center py-24 justify-center space-y-12'>
@@ -178,6 +182,30 @@ const Generator = () => {
           ))}
         </div>
       </div>
+
+      {showErr &&
+        <p className='text-center font-bold text-red-400 h7'>Incomplete Fields</p>
+      }
+
+      <a href="#workout">
+          <button onClick={() => {
+            if (challenge && goals && muscleGroup.length > 0) {
+              const generateWorkoutParams = {
+                muscles: muscleGroup,
+                poison: challenge,
+                goal: goals
+              }
+              setShowErr(false);
+              setGenerateWorkoutParams(generateWorkoutParams);
+            } else {
+              setShowErr(true);
+            }
+          }} className="button">
+            Generate
+          </button>
+      </a>
+
+
     </div>
   );
 };
