@@ -14,6 +14,7 @@ const Generator = ({setGenerateWorkoutParams}) => {
   const [muscleGroup, setMuscleGroup] = useState([]);
   const [showMsg, setErrorMsg] = useState(false);
   const [showErr, setShowErr] = useState(false);
+  const [showRegenerate, setshowRegenerate] = useState(false);
 
   // Handles the display of the modal
   const modalShow = () => {
@@ -73,21 +74,7 @@ const Generator = ({setGenerateWorkoutParams}) => {
       setSelectorText('Which muscle group do you want to target?');
     }
   }, [challenge]);
-
-  // useEffect(() => {
-  //   if (challenge && muscleGroup && goals) { 
-  //     const generateWorkoutParams = {
-  //       muscles: muscleGroup,
-  //       poison: challenge,
-  //       goal: goals
-  //     }
-  //     setErrorMsg(false);
-  //     setGenerateWorkoutParams(generateWorkoutParams);
-  //   } else {
-  //     setShowErr(true);
-  //   }
-  // }, [challenge, goals, muscles, muscleGroup]);
-
+  
   return (
     <div id='generator' className='responsivePad flex flex-col items-center py-24 justify-center space-y-12'>
       <div className='space-y-8 w-full'>
@@ -197,6 +184,7 @@ const Generator = ({setGenerateWorkoutParams}) => {
               }
               setShowErr(false);
               setGenerateWorkoutParams(generateWorkoutParams);
+              setshowRegenerate(true);
             } else {
               setShowErr(true);
             }
@@ -204,6 +192,10 @@ const Generator = ({setGenerateWorkoutParams}) => {
             Generate
           </button>
       </a>
+
+      {showRegenerate && <p className='h7 text-center font-bold'>
+        Didn't like the workout? Click 'Generate' again for a completely NEW workout with the same preferences.
+      </p> }
 
 
     </div>
